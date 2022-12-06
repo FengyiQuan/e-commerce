@@ -15,11 +15,11 @@ import { watch } from 'vue';
 
 interface Props {
   messages: string[];
-  type: string;
+  // type: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   messages: () => [],
-  type: '',
+  // type: '',
 });
 // watch(props, () => console.log(props));
 </script>

@@ -6,8 +6,7 @@
           <div class="card-body p-4 p-sm-5">
             <h5 class="card-title text-center mb-5 fw-light fs-5">Sign Up</h5>
             <message-box-component
-              :messages="errorMessage.messages"
-              type="errorMessage.type"
+              :messages="errorMessage"
             ></message-box-component>
             <form id="registerForm" @submit.prevent="onRegister" method="POST">
               <div class="form-floating mb-3">
@@ -107,18 +106,9 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
 import MessageBoxComponent from '../components/MessageBoxComponent.vue';
-interface ErrorMessage {
-  messages: string[];
-  type: string;
-}
-const createErrorMessage = () => {
-  return {
-    messages: [],
-    type: 'alert',
-  };
-};
 
-const errorMessage: Ref<ErrorMessage> = ref(createErrorMessage());
+
+const errorMessage: Ref<string[]> = ref([]);
 interface RegisterForm {
   username: string;
   password: string;
@@ -136,10 +126,6 @@ function createEmptyRegisterForm(): RegisterForm {
     roleType: 1,
   };
 }
-const options = [
-  { value: 1, text: 'Buyer' },
-  { value: 2, text: 'Seller' },
-];
 const registerForm: Ref<RegisterForm> = ref(createEmptyRegisterForm());
 async function onRegister() {
   try {
@@ -155,9 +141,7 @@ async function onRegister() {
     if (response.ok) {
       window.location.href = response.url;
     } else {
-      errorMessage.value.messages = (await response.json()).message;
-
-      //   console.log(errorMessage.value.messages);
+      errorMessage.value = (await response.json()).message;
     }
   } catch (error) {
     console.log(error);

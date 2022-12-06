@@ -6,7 +6,7 @@ import { CartItem } from './Order';
 // 1. Create an interface representing a document in MongoDB.
 interface IUser {
   username: string;
-  // email: string;
+  email: string;
   password: string;
   // img?: string;
   roleType: UserRole;
@@ -33,16 +33,16 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: UserRole.Buyer,
     },
-    // email: {
-    //   type: String,
-    //   required: true,
-    //   trim: true,
-    //   lowercase: true,
-    // },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+    },
     // img: {
     //   data: Buffer,
     //   contentType: String,
-    // },orderItems: {
+    // },
     cart: {
       type: [
         {

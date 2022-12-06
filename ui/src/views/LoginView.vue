@@ -4,30 +4,21 @@
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card border-0 shadow rounded-3 my-5">
           <div class="card-body p-4 p-sm-5">
-            <h5 class="card-title text-center mb-5 fw-light fs-5">Sign Up</h5>
-            <%- include('./partials/messages'); %>
-            <form action="/register" method="POST">
+            <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+            <message-box-component
+              :messages="errorMessage"
+            ></message-box-component>
+            <form @submit.prevent="handleLogin" method="POST">
               <div class="form-floating mb-3">
                 <input
                   type="text"
                   class="form-control"
                   id="username"
                   name="username"
-                  value="<%= typeof username != 'undefined' ? username : '' %>"
+                  v-model="user.username"
                   required
                 />
-                <label for="username">Username</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  value="<%= typeof email != 'undefined' ? email : '' %>"
-                  required
-                />
-                <label for="email">Email</label>
+                <label for="floatingInput">Username</label>
               </div>
               <div class="form-floating mb-3">
                 <input
@@ -35,33 +26,33 @@
                   class="form-control"
                   id="password"
                   name="password"
+                  v-model="user.password"
                 />
-                <label for="password">Password</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password2"
-                  name="password2"
-                />
-                <label for="password2">Re-enter your password</label>
+                <label for="floatingPassword">Password</label>
               </div>
 
-              <p>
-                By creating an account you agree to our
-                <a href="#">Terms & Privacy</a>.
-              </p>
+              <div class="form-check mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value="RemeberPassword"
+                  id="rememberPasswordCheck"
+                  v-model="user.checked"
+                />
+                <label class="form-check-label" for="rememberPasswordCheck">
+                  Remember password
+                </label>
+              </div>
               <div class="d-grid">
                 <button
                   class="btn btn-primary btn-login text-uppercase fw-bold"
                   type="submit"
                 >
-                  Register
+                  Sign in
                 </button>
               </div>
               <div class="d-grid">
-                <p>Already have an account?<a href="/login">Login</a></p>
+                <a href="/register">Register</a>
               </div>
               <hr class="my-4" />
               <!-- <div class="d-grid mb-2">
@@ -86,41 +77,15 @@
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue';
-// import { useRoute } from 'vue-router/composables';
+import { LoginForm, createLoginRef, onLogin } from '../controllers/auth';
+import MessageBoxComponent from '../components/MessageBoxComponent.vue';
+const errorMessage: Ref<string[]> = ref([]);
 
-// const router = useRoute();
-interface LoginForm {
-  username: string;
-  password: string;
-  checked: string[];
-}
+const user: Ref<LoginForm> = createLoginRef();
 
-function createEmptyLoginForm(): LoginForm {
-  return {
-    username: '',
-    password: '',
-    checked: [],
-  };
-}
-
-const user: Ref<LoginForm> = ref(createEmptyLoginForm());
-async function onLogin() {
-  try {
-    const response = await fetch('/api/login', {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(user.value),
-    });
-    console.log(response);
-    if (response.redirected) {
-      // window.location.replace(response.url);
-
-      window.location.href = response.url;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
+const handleLogin = () => {
+  onLogin(user.value, (errorMsg: string[]) => {
+    errorMessage.value = errorMsg;
+  });
+};
 </script>
