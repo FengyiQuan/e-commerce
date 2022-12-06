@@ -37,8 +37,8 @@ import ProductsComponent from "../components/ProductsComponent.vue";
 import ShoppingCartComponent from "../components/ShoppingCartComponent.vue";
 
 import { CartItemList } from "@/viewModels/CartItemListViewModel";
-import { watch } from "fs";
-import { ProgressPlugin } from "bootstrap-vue";
+// import { watch } from "fs";
+// import { ProgressPlugin } from "bootstrap-vue";
 import LoginView from "./LoginView.vue";
 const user: Ref<UserViewModel | null> = ref(null);
 const products: Ref<ProductViewModel[]> = ref([]);

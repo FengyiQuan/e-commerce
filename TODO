@@ -18,4 +18,4 @@ XXXXXX
 1. shopping cart, session based
 2. order, everything
 3. use profile, curd
-4. 
+4. MESSAGEBOX: type="errorMessage.type"

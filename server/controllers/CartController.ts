@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import User, { IUserModel } from '../models/User';
 import { CartItem } from '../models/Order';
-import mongoose from 'mongoose';
+import mongoose  from 'mongoose';
+
 
 export default class CartController {
   static getCart = () => {
@@ -22,13 +23,7 @@ export default class CartController {
   };
   // only unauthenticated user will go here, merge unlogin cart to login user database only!!!
   static addManyItemToCart = (
-    tempCart: {
-      productId: string;
-      title: string;
-      quantity: number;
-      unitPrice: number;
-      sellerId: string;
-    }[],
+    tempCart: CartItem[],
     userId: string
   ) => {
     // console.log(tempCart);
@@ -115,7 +110,7 @@ class SessionCartController {
   };
   static deleteCart = async (req: Request, res: Response) => {
     const cart = req.session.cart;
-    const productId: string = req.params.productId;
+    const productId = new mongoose.Types.ObjectId(req.params.productId);
     const productIndex = cart.map((c) => c.productId).indexOf(productId);
     if (productIndex != -1) {
       cart.splice(productIndex, 1);
@@ -128,16 +123,7 @@ class SessionCartController {
   };
 }
 class DBCartController {
-  static addManyItemToCart = async (
-    tempCart: {
-      productId: string;
-      title: string;
-      quantity: number;
-      unitPrice: number;
-      sellerId: string;
-    }[],
-    userId: string
-  ) => {
+  static addManyItemToCart = async (tempCart: CartItem[], userId: string) => {
     console.log('dbconto', tempCart);
     const currentUser: IUserModel = await User.findOne({
       _id: userId,

@@ -1,70 +1,87 @@
 <template>
-  <b-container>
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <b-card class="border-0 shadow my-5">
-        <b-card-title class="text-center mb-5 fs-5">Sign In</b-card-title>
-        <div class="p-3 p-sm-4">
-          <b-form-group
-            class="position-relative"
-            id="usernameField"
-            label="Username:"
-            label-for="usernameInput"
-          >
-            <b-form-input
-              class="form-control"
-              id="usernameInput"
-              v-model="user.username"
-              placeholder="Enter username"
-              required
-            />
-          </b-form-group>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card border-0 shadow rounded-3 my-5">
+          <div class="card-body p-4 p-sm-5">
+            <h5 class="card-title text-center mb-5 fw-light fs-5">Sign Up</h5>
+            <%- include('./partials/messages'); %>
+            <form action="/register" method="POST">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  value="<%= typeof username != 'undefined' ? username : '' %>"
+                  required
+                />
+                <label for="username">Username</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  value="<%= typeof email != 'undefined' ? email : '' %>"
+                  required
+                />
+                <label for="email">Email</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                />
+                <label for="password">Password</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password2"
+                  name="password2"
+                />
+                <label for="password2">Re-enter your password</label>
+              </div>
 
-          <b-form-group
-            id="PassswordField"
-            label="Password:"
-            label-for="passwordInput"
-          >
-            <b-form-input
-              class="form-control"
-              type="password"
-              id="passwordInput"
-              v-model="user.password"
-              placeholder="Enter password"
-              required
-              @keyup.enter.native="onLogin"
-            ></b-form-input>
-          </b-form-group>
-          <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
-            <b-form-checkbox-group
-              v-model="user.checked"
-              id="remeberPassword"
-              :aria-describedby="ariaDescribedby"
-            >
-              <b-form-checkbox value="RemeberPassword"
-                >Remember password</b-form-checkbox
-              >
-            </b-form-checkbox-group>
-          </b-form-group>
-
-          <div class="">
-            <b-button
-              @click="onLogin"
-              id="signinbutton"
-              type="submit"
-              variant="primary"
-              class="text-uppercase text-center"
-              block
-            >
-              Sign in</b-button
-            >
+              <p>
+                By creating an account you agree to our
+                <a href="#">Terms & Privacy</a>.
+              </p>
+              <div class="d-grid">
+                <button
+                  class="btn btn-primary btn-login text-uppercase fw-bold"
+                  type="submit"
+                >
+                  Register
+                </button>
+              </div>
+              <div class="d-grid">
+                <p>Already have an account?<a href="/login">Login</a></p>
+              </div>
+              <hr class="my-4" />
+              <!-- <div class="d-grid mb-2">
+                                            <button class="btn btn-google btn-login text-uppercase fw-bold"
+                                                type="submit">
+                                                <i class="fab fa-google me-2"></i> Sign in with Google
+                                            </button>
+                                        </div>
+                                        <div class="d-grid">
+                                            <button class="btn btn-facebook btn-login text-uppercase fw-bold"
+                                                type="submit">
+                                                <i class="fab fa-facebook-f me-2"></i> Sign in with Facebook
+                                            </button>
+                                        </div> -->
+            </form>
           </div>
-          <div class="d-grid">
-            <a href="/register">Register</a>
-          </div>
-          <hr class="my-4" /></div
-      ></b-card>
+        </div>
+      </div>
     </div>
-  </b-container>
+  </div>
 </template>
 
 <script setup lang="ts">

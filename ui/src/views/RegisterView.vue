@@ -1,108 +1,124 @@
 <template>
-  <b-container>
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <b-card class="border-0 shadow my-5">
-        <div class="p-3 p-sm-4">
-          <b-card-title class="text-center mb-5 fs-5">Sign Up</b-card-title>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card border-0 shadow rounded-3 my-5">
+          <div class="card-body p-4 p-sm-5">
+            <h5 class="card-title text-center mb-5 fw-light fs-5">Sign Up</h5>
+            <message-box-component
+              :messages="errorMessage.messages"
+              type="errorMessage.type"
+            ></message-box-component>
+            <form id="registerForm" @submit.prevent="onRegister" method="POST">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  v-model="registerForm.username"
+                />
+                <label for="username">Username</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  v-model="registerForm.email"
+                  required
+                />
+                <label for="email">Email</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  v-model="registerForm.password"
+                  required
+                />
+                <label for="password">Password</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password2"
+                  v-model="registerForm.password2"
+                  name="password2"
+                  required
+                />
+                <label for="password2">Re-enter your password</label>
+              </div>
+              <div class="form-floating mb-3">
+                <select
+                  class="form-select"
+                  id="roleType"
+                  v-model="registerForm.roleType"
+                  aria-label="Default is User role"
+                  required
+                >
+                  <option selected :value="1">Buyer</option>
+                  <option :value="2">Seller</option>
+                  <option :value="3">Admin</option>
+                </select>
+                <label for="roleType">Choose your role type</label>
+              </div>
 
-          <b-form-group
-            class="position-relative"
-            id="usernameField"
-            label="Username:"
-            label-for="usernameInput"
-          >
-            <b-form-input
-              class="form-control"
-              id="usernameInput"
-              v-model="registerForm.username"
-              placeholder="Enter username"
-              required
-            />
-          </b-form-group>
-          <b-form-group
-            class="position-relative"
-            id="emailField"
-            label="Email:"
-            label-for="emailInput"
-          >
-            <b-form-input
-              class="form-control"
-              id="emailInput"
-              v-model="registerForm.email"
-              placeholder="Enter email"
-              required
-            />
-          </b-form-group>
-
-          <b-form-group
-            id="PassswordField"
-            label="Password:"
-            label-for="passportInput"
-          >
-            <b-form-input
-              class="form-control"
-              type="password"
-              id="passportInput"
-              v-model="registerForm.password"
-              placeholder="Enter password"
-              required
-            ></b-form-input>
-          </b-form-group>
-          <b-form-group
-            id="PassswordField2"
-            label="Re-enter your password:"
-            label-for="passportInput2"
-          >
-            <b-form-input
-              class="form-control"
-              type="password"
-              id="passportInput2"
-              v-model="registerForm.password2"
-              placeholder="Enter password"
-              required
-            ></b-form-input>
-          </b-form-group>
-          <b-form-group
-            id="roleTypeField"
-            label="Choose your role: "
-            label-for="roleTypeInput"
-          >
-            <b-form-select
-              class="form-control"
-              :options="options"
-              id="roleTypeInput"
-              v-model="registerForm.roleType"
-              required
-            ></b-form-select>
-          </b-form-group>
-
-          <p>
-            By creating an account you agree to our
-            <a href="#">Terms & Privacy</a>.
-          </p>
-          <div class="">
-            <b-button
-              @click="onRegister"
-              type="submit"
-              variant="primary"
-              class="text-uppercase text-center"
-              block
-            >
-              Register</b-button
-            >
+              <p>
+                By creating an account you agree to our
+                <a href="#">Terms & Privacy</a>.
+              </p>
+              <div class="d-grid">
+                <button
+                  class="btn btn-primary btn-login text-uppercase fw-bold"
+                  type="submit"
+                >
+                  Register
+                </button>
+              </div>
+              <div class="d-grid">
+                <p>Already have an account?<a href="/login">Login</a></p>
+              </div>
+              <hr class="my-4" />
+              <!-- <div class="d-grid mb-2">
+                                            <button class="btn btn-google btn-login text-uppercase fw-bold"
+                                                type="submit">
+                                                <i class="fab fa-google me-2"></i> Sign in with Google
+                                            </button>
+                                        </div>
+                                        <div class="d-grid">
+                                            <button class="btn btn-facebook btn-login text-uppercase fw-bold"
+                                                type="submit">
+                                                <i class="fab fa-facebook-f me-2"></i> Sign in with Facebook
+                                            </button>
+                                        </div> -->
+            </form>
           </div>
-          <div class="d-grid">
-            <p>Already have an account?<a href="/login">Login</a></p>
-          </div>
-          <hr class="my-4" /></div
-      ></b-card>
+        </div>
+      </div>
     </div>
-  </b-container>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, Ref } from "vue";
-import User, { IUserModel } from "../../../server/models/User";
+import { ref, Ref } from 'vue';
+import MessageBoxComponent from '../components/MessageBoxComponent.vue';
+interface ErrorMessage {
+  messages: string[];
+  type: string;
+}
+const createErrorMessage = () => {
+  return {
+    messages: [],
+    type: 'alert',
+  };
+};
+
+const errorMessage: Ref<ErrorMessage> = ref(createErrorMessage());
 interface RegisterForm {
   username: string;
   password: string;
@@ -113,29 +129,35 @@ interface RegisterForm {
 
 function createEmptyRegisterForm(): RegisterForm {
   return {
-    username: "",
-    password: "",
-    password2: "",
-    email: "",
+    username: '',
+    password: '',
+    password2: '',
+    email: '',
     roleType: 1,
   };
 }
 const options = [
-  { value: 1, text: "Buyer" },
-  { value: 2, text: "Seller" },
+  { value: 1, text: 'Buyer' },
+  { value: 2, text: 'Seller' },
 ];
 const registerForm: Ref<RegisterForm> = ref(createEmptyRegisterForm());
 async function onRegister() {
   try {
-    const response = await fetch("/api/register", {
+    const response = await fetch('/api/register', {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(registerForm.value),
     });
-    if (response.redirected) {
+    // console.log(await response.json())
+    // success login
+    if (response.ok) {
       window.location.href = response.url;
+    } else {
+      errorMessage.value.messages = (await response.json()).message;
+
+      //   console.log(errorMessage.value.messages);
     }
   } catch (error) {
     console.log(error);
